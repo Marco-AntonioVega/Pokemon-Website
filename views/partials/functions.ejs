@@ -1,6 +1,6 @@
 <%
   capitalize = function(word) {
-  let res = word.charAt(0).toUpperCase() + word.slice(1);
+    let res = word.charAt(0).toUpperCase() + word.slice(1);
     if(word.indexOf('-') > -1) {
       let index = word.indexOf('-');
       res = res.slice(0, index + 1) + res.charAt(index + 1).toUpperCase() + res.slice(index + 2);
@@ -19,24 +19,24 @@
   }
 
   getTypes = function(pokemon) {
-      let res = capitalize(pokemon.types[0].type.name);
-      if(pokemon.types.length > 1)
-        res += " / " + capitalize(pokemon.types[1].type.name);
-      return res;
+    let res = capitalize(pokemon.types[0].type.name);
+    if(pokemon.types.length > 1)
+      res += " / " + capitalize(pokemon.types[1].type.name);
+    return res;
   }
       
   getAbilities = function(pokemon) {
-      let res = capitalize(pokemon.abilities[0].ability.name);
-      if(res.indexOf('-') > -1)
-        res = res.slice(0, res.indexOf('-')) + " " + res.slice(res.indexOf('-') + 1);
-      if(pokemon.abilities.length > 1) {
-        for(let i = 1; i < pokemon.abilities.length; i++) {
-          res += ", " + capitalize(pokemon.abilities[i].ability.name);
-          if(res.indexOf('-') > -1)
-            res = res.slice(0, res.indexOf('-')) + " " + res.slice(res.indexOf('-') + 1);
-        }
+    let res = capitalize(pokemon.abilities[0].ability.name);
+    if(res.indexOf('-') > -1)
+      res = res.slice(0, res.indexOf('-')) + " " + res.slice(res.indexOf('-') + 1);
+    if(pokemon.abilities.length > 1) {
+      for(let i = 1; i < pokemon.abilities.length; i++) {
+        res += ", " + capitalize(pokemon.abilities[i].ability.name);
+        if(res.indexOf('-') > -1)
+          res = res.slice(0, res.indexOf('-')) + " " + res.slice(res.indexOf('-') + 1);
       }
-      return res;
+    }
+    return res;
   }
 
   getGenus = function(details) {
@@ -55,12 +55,35 @@
   }
 
   getFlavorText = function(details) {
-      let size = details.flavor_text_entries.length;
-      while(true) {
-        let num = Math.floor(Math.random() * size);
-        if(details.flavor_text_entries[num].language.name == "en")
-          return details.flavor_text_entries[num].flavor_text;
+    let size = details.flavor_text_entries.length;
+    while(true) {
+      let num = Math.floor(Math.random() * size);
+      if(details.flavor_text_entries[num].language.name == "en")
+        return filterFlavorText(details.flavor_text_entries[num].flavor_text);
+    }
+  }
+
+  filterFlavorText = function(text) {
+    text = text.replace(/[^a-zA-Z0-9'’".,:;é-]/g, " ");
+    let arr = text.split(" ");
+    let res = "";
+    arr.forEach((x) => {
+      if(x.length > 1 && x[0] == x[0].toUpperCase() && x[1] == x[1].toUpperCase()) {
+        if(res.length == 0) {
+          res = res.concat(x[0].concat(x.slice(1).toLowerCase()));
+        } else {
+          res = res.concat(" ", x[0].concat(x.slice(1).toLowerCase()));
+        }
       }
+      else {
+        if(res.length == 0) {
+          res = res.concat(x);
+        } else {
+          res = res.concat(" ", x);
+        }
+      }
+    });
+    return res;
   }
 
   getSpecialID = function(id, i) {

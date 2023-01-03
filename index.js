@@ -31,7 +31,7 @@ getNationalDexCap();
 app.get('/', async (req, res) => {
   bgs.sort(() => Math.random() - 0.5);
   
-  let id = Math.floor(Math.random() * (nationalDexCap - 1) + 1);
+  let id = Math.floor(Math.random() * nationalDexCap) + 1;
   let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   let response = await fetch(url);
   let mainInfo = await response.json();
