@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
 const msg = require('msg-generator');
+const port = 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -143,4 +144,8 @@ app.get('/typeCheck', async (req, res) => {
   res.render('typeCheck', {"pokemon": correctMainInfo, "details": specInfo, "sprite": sprite, "bg": typeBg, "cry": cry, "message": msg('failure_troll')});
 });
 
-app.listen(3000);
+// app.listen(3000);
+
+app.listen(port, () => {
+  console.log(`Now listening on port ${port}`); 
+});
