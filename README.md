@@ -1,6 +1,6 @@
-# Pokemon-Website
-This project provides Pokemon quizzes and activities using Node.js.
-Resources used are the [RESTful PokeAPI](https://pokeapi.co/).
+# Pokémon-Website
+This project provides Pokémon quizzes and activities using Node.js.
+Resources used are the [RESTful PokéAPI](https://pokeapi.co/).
 
 # Follow these steps to run the application:
 
