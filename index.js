@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
-const msg = require('msg-generator');
 const port = 3000;
+var nationalDexCap = 0;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -18,10 +18,20 @@ var cryIndex = 0;
 var typeID = 0;
 var typeBg = "";
 
+//gets pokedex number of last current Pokemon
+const getNationalDexCap = async() => {
+  let url = `https://pokeapi.co/api/v2/pokemon-species`;
+  let response = await fetch(url);
+  let info = await response.json();
+  nationalDexCap = info.count;
+};
+
+getNationalDexCap();
+
 app.get('/', async (req, res) => {
   bgs.sort(() => Math.random() - 0.5);
   
-  let id = Math.floor(Math.random() * (899 - 1) + 1);
+  let id = Math.floor(Math.random() * (nationalDexCap - 1) + 1);
   let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   let response = await fetch(url);
   let mainInfo = await response.json();
@@ -45,8 +55,10 @@ app.get('/choose', async (req, res) => {
   let specInfo = "";
   let cry = "";
   let sprite = "";
-  
-  if(id && id >= 1 && id <= 898) {
+
+  id = parseInt(id);
+
+  if(id && id >= 1 && id <= nationalDexCap) {
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     mainInfo = await response.json();
@@ -59,7 +71,7 @@ app.get('/choose', async (req, res) => {
     cry = `https://pokemoncries.com/cries/${id}.mp3`;
   }
   
-  res.render('choose', {"pokemon": mainInfo, "details": specInfo, "sprite": sprite, "bg": bgs[0], "cry": cry});
+  res.render('choose', {"pokemon": mainInfo, "details": specInfo, "sprite": sprite, "bg": bgs[0], "cry": cry, "nationalDexCap": nationalDexCap});
 });
 
 app.get('/sound', async (req, res) => {
@@ -96,11 +108,11 @@ app.get('/sound', async (req, res) => {
 });
 
 app.get('/soundWrongResults', async (req, res) => {
-  res.render('soundWrongResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": msg('failure_troll')});
+  res.render('soundWrongResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": "Try again"});
 });
 
 app.get('/soundCorrectResults', async (req, res) => {
-  res.render('soundCorrectResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": msg('success_troll')});
+  res.render('soundCorrectResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": "Correct!"});
 });
 
 app.get('/type', async (req, res) => {
@@ -141,10 +153,8 @@ app.get('/typeCheck', async (req, res) => {
   let sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${typeID}.png`;
   let cry = `https://pokemoncries.com/cries/${typeID}.mp3`;
   
-  res.render('typeCheck', {"pokemon": correctMainInfo, "details": specInfo, "sprite": sprite, "bg": typeBg, "cry": cry, "message": msg('failure_troll')});
+  res.render('typeCheck', {"pokemon": correctMainInfo, "details": specInfo, "sprite": sprite, "bg": typeBg, "cry": cry, "message": "Try again"});
 });
-
-// app.listen(3000);
 
 app.listen(port, () => {
   console.log(`Now listening on port ${port}`); 

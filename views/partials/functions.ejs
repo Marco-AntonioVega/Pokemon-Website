@@ -10,8 +10,10 @@
 
   pad = function(id) {
     if(Math.floor(id/10) == 0)
-      return "00" + id;
+      return "000" + id;
     else if(Math.floor(id/10) < 10)
+      return "00" + id;
+    else if(Math.floor(id/10) < 100)
       return "0" + id;
     return id;
   }
