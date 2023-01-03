@@ -1,7 +1,8 @@
 # Pokemon-Website
 This project provides Pokemon quizzes and activities using Node.js.
+Resources used are the [RESTful PokeAPI](https://pokeapi.co/).
 
-Follow these steps to run the application:
+#Follow these steps to run the application:
 
 1) Download [node.js](https://nodejs.org/en/download/) on your system. In your terminal, you can run "node -v" (without the quotes) to verify you installed node successfully and to check the version you have.
 2) Download the repository and unzip.
