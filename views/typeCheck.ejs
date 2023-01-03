@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Spelling Bee Check</title>
+  </head>
+  
+  <body style="background-image: url('<%= bg %>'); background-size: cover;">
+    <% include("partials/functions.ejs") %> 
+    <header><h1>Welcome to the Pokédex!</h1></header>
+    <%- include("partials/menu.ejs") %>
+      
+    <form action="/typeCheck" method="GET">
+      <div id="chooseCard" class="card column">
+        <h3>Enter the Pokémon's name</h3>
+        <h3>(spelling counts):</h3><br>
+        <input type="text" name="spellingName"><br>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+        
+    <br><br>
+      
+    <div class="row card">
+      <% if(details) { %>
+        <div class="column"><h2><%= capitalize(pokemon.name) + " #" + pad(pokemon.id) %></h2>
+      <% } else { %>
+        <div class="column"><h2 class="incorrect"><%= message %></h2>
+      <% } %>
+        
+      <img src="<%= sprite %>">
+      <audio
+        controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
+        src="<%= cry %>">
+        Your browser does not support the
+        <code>audio</code> element.
+      </audio>
+        </div>
+  
+      <div class="column">
+        <% if(details) { %>
+          <h4 class="item">Type: <%= getTypes(pokemon) %></h4>
+          <h4 class="item">Species: <%= getGenus(details) %></h4>
+          <h4 class="item">Height: <%= getHeight(pokemon) %></h4>
+          <h4 class="item">Weight: <%= getWeight(pokemon) %></h4>
+          <h4 class="item">Abilities: <%= getAbilities(pokemon) %></h4>
+          <h4 class="flavor"><%= getFlavorText(details) %></h4>
+        <% } else { %>
+          <h4 class="item">Type: ???</h4>
+          <h4 class="item">Species: ???</h4>
+          <h4 class="item">Height: ???</h4>
+          <h4 class="item">Weight: ???</h4>
+          <h4 class="item">Abilities: ???</h4>
+          <h4 class="flavor"></h4>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>

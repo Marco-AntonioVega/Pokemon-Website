@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Home</title>
+  </head>
+  
+  <body style="background-image: url('<%= bg %>'); background-size: cover;">
+    <% include("partials/functions.ejs") %> 
+    <header><h1>Welcome to the Pokédex!</h1></header>
+    <%- include("partials/menu.ejs") %>
+      
+    <div class="row card">
+      <div class="column"><h2><%= capitalize(pokemon.name) + " #" + pad(pokemon.id) %></h2>
+        <img class="displayImg" src="<%= sprite %>">
+        <audio
+          controls style="margin: 0 auto; display: block; margin-bottom: 40px; margin-top: 40px;"
+          src="<%= cry %>">
+          Your browser does not support the
+          <code>audio</code> element.
+        </audio>
+      </div>
+      
+      <div class="column">
+        <h4 class="item">Type: <%= getTypes(pokemon) %></h4>
+        <h4 class="item">Species: <%= getGenus(details) %></h4>
+        <h4 class="item">Height: <%= getHeight(pokemon) %></h4>
+        <h4 class="item">Weight: <%= getWeight(pokemon) %></h4>
+        <h4 class="item">Abilities: <%= getAbilities(pokemon) %></h4>
+        <h4 class="flavor"><%= getFlavorText(details) %></h4>
+      </div>
+    </div> 
+  </body>
+</html>

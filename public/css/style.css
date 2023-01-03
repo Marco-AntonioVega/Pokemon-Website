@@ -1,0 +1,110 @@
+nav {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto;
+  background: rgba(0, 191, 255, 0.9);
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+}
+
+nav a{
+  margin-left: 10px;
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+nav a:hover {
+  background: rgba(0, 143, 191,  0.9);
+}
+
+h1, h2, h3, h4 {
+  margin: 0 auto;
+  text-align: center;
+}
+
+header h1 {
+  background-color: yellow;
+  width: fit-content;
+  background: rgba(255,255,0, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+h4 {
+  margin: 15px;
+}
+
+.card {
+  background: rgba(0, 191, 255, 0.9);
+  border-radius: 10px;
+  padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+div, input, button {
+  width: max-content;
+  margin: 0 auto;
+}
+
+#chooseCard {
+  padding: 10px;
+}
+
+.chooseName, #newBtn {
+  margin: 0 auto;
+}
+
+.cryMargins {
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.column {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.item {
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.flavor {
+  width: 25vw;
+}
+
+.displayImg {
+  height: 400px;
+  width: 400px;
+}
+
+.displaySmallImg {
+  height: 200px;
+  width: 200px;
+}
+
+.incorrect {
+  color: red;
+}
+
+#correct {
+  color: green;
+}
+
+#correctBtn {
+  background: rgba(50, 205, 50, 0.9);
+}
