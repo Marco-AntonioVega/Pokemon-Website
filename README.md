@@ -12,4 +12,6 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 6) Type ctrl+c in your terminal to stop the server after you are finished.
 
 # Known issues:
-Fetching unique cries, flavor text, and species for Pokémon that share the same Pokédex number but have different forms is currently impossible with the resources I have. I may have to hard code or make my own API for this to be perfect.
+1) Fetching unique cries, flavor text, and species for Pokémon that share the same Pokédex number but have different forms is currently impossible with the resources I have. I may have to hard code or make my own API for this to be perfect. 
+2) There are currently no Pokémon cries from Generation 9, unless the ownder of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
+3) Since Generation 9 is still new, [RESTful PokéAPI](https://pokeapi.co/) has no info for Pokémon in that generation yet.
