@@ -16,3 +16,4 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 2) There are currently no Pokémon cries from Generation 9, unless the ownder of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
 3) Since Generation 9 is still new, [RESTful PokéAPI](https://pokeapi.co/) has no info for Pokémon in that generation yet.
 4) Melmetal has no cry since the owner of [PokémonCries](https://pokemoncries.com) does not include it in any generation. Hardcoding it may be the only solution.
+5) Pokémon without cries can show up on the Sound Quiz.
