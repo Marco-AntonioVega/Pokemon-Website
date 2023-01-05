@@ -11,5 +11,5 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 5) Navigate to http://localhost:3000/ on your browser.
 6) Type ctrl+c in your terminal to stop the server after you are finished.
 
-#Known issues:
+# Known issues:
 Fetching unique cries, flavor text, and species for Pokémon that share the same Pokédex number but have different forms is currently impossible with the resources I have. I may have to hard code or make my own API for this to be perfect.
