@@ -13,8 +13,6 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 
 # Known issues:
 1) Fetching unique cries, flavor text, and species for Pokémon that share the same Pokédex number but have different forms is currently impossible with the resources I have. I may have to hard code or make my own API for this to be perfect. 
-2) There are currently no Pokémon cries from Generation 9, unless the ownder of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
-3) Since Generation 9 is still new, [RESTful PokéAPI](https://pokeapi.co/) has no info for Pokémon in that generation yet.
-4) Melmetal has no cry since the owner of [PokémonCries](https://pokemoncries.com) does not include it in any generation. Hardcoding it may be the only solution.
-5) Pokémon without cries can show up on the Sound Quiz.
-6) Favicon is way too small.
+2) Some Pokemon from Generation 8 and all Pokemon from Generation 9 are missing their cries until/if the owner of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
+3) Pokémon without cries can show up on the Sound Quiz.
+4) Favicon is way too small.
