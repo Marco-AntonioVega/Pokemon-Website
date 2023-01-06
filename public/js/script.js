@@ -13,9 +13,12 @@ const capitalize = (text) => {
 
 //gets types of input pokemon
 const getTypes = (types) => {
-  let res = capitalize(types[0].type.name);
-  if(types.length > 1)
-    res += " / " + capitalize(types[1].type.name);
+  let name = types[0].type.name;
+  let res = `<img src="img/types/${name}.png" class="typeIcon">` + capitalize(name);
+  if(types.length > 1) {
+    name = types[1].type.name;
+    res += " / " + `<img src="img/types/${name}.png" class="typeIcon">` + capitalize(name);
+  }
   return res;
 }
 
@@ -85,26 +88,24 @@ const pad = (id) => {
   return id;
 }
 
-//change to original pokemon tab
-const changeToOriginal = (variant) => {
-  console.log(variant);
-  document.getElementById("sprite").src = variant.sprite;
-  document.getElementById("type").innerText = "Type: " + variant.types;
-  document.getElementById("genus").innerText = "Species: " + variant.genera;
-  document.getElementById("height").innerText = "Height: " + variant.height;
-  document.getElementById("weight").innerText = "Weight: " + variant.weight;
-  document.getElementById("abilities").innerText = "Abilities: " + variant.abilities;
-  document.getElementById("flavorText").innerText = variant.flavorText;
-}
-
-const changeToVariantMiddle = (variant) => {
-  $.get(variant.sprite).done(function () {
+//changes to variant tab
+const changeToVariantMiddle = (variant, isOriginal) => {
+  if(isOriginal) {
     document.getElementById("sprite").src = variant.sprite;
-  });
-  document.getElementById("type").innerText = "Type: " + getTypes(variant.types);
+    document.getElementById("genus").innerText = "Species: " + variant.genera;
+    document.getElementById("flavorText").innerText = variant.flavorText;
+  }
+
+  else {
+    $.get(variant.sprite).done(function () {
+      document.getElementById("sprite").src = variant.sprite;
+    });
+  }
+  
+  document.getElementById("type").innerHTML = "Type: " + getTypes(variant.types);
   document.getElementById("height").innerText = "Height: " + getHeight(variant.height);
   document.getElementById("weight").innerText = "Weight: " + getWeight(variant.weight);
   document.getElementById("abilities").innerText = "Abilities: " + getAbilities(variant.abilities);
 }
 
-export {capitalize, getTypes, getAbilities, getGenus, getHeight, getWeight, getFlavorText, pad, changeToOriginal, changeToVariantMiddle}
+export {capitalize, getGenus, getFlavorText, pad, changeToVariantMiddle}

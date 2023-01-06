@@ -9,11 +9,9 @@
   </head>
   
   <body style="background-image: url('<%= bg %>'); background-size: cover;">
-    <% include("partials/functions.ejs") %> 
-    <header><h1>Welcome to the Pokédex!</h1></header>
     <%- include("partials/menu.ejs") %>
-      
-    
+
+    <!-- pokemon name input box -->
     <div id="chooseCard" class="card column">
       <h3>Enter the Pokémon's name</h3>
       <h3>(spelling counts):</h3><br>
@@ -26,10 +24,10 @@
       
     <div class="row card">
       <div class="column">
-        <h1 id="spellingHeader">???</h1>
-        <div id="tabRow">
-        
-        </div>
+        <h1 id="cardHeader">???</h1>
+        <div id="tabRow"></div>
+
+        <!-- pokemon sprite and cry -->
         <img id="sprite" src="<%= variants[0].sprite %>">
         <audio
           controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
@@ -38,8 +36,9 @@
           <code>audio</code> element.
         </audio>
       </div>
-  
-      <div class="column">
+
+      <!-- specific pokemon details, first variant as default on submit -->
+      <div class="column pokemonDetails">
         <h4 class="item" id="type">Type: ???</h4>
         <h4 class="item" id="genus">Species: ???</h4>
         <h4 class="item" id="height">Height: ???</h4>
@@ -51,8 +50,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module">
-      import {pad, changeToOriginal, changeToVariantMiddle} from "./js/script.js";
-      
+      import {pad, changeToVariantMiddle} from "./js/script.js";
+
+      //sets event listeners for tabs
       const init = () => {
         $("#spellingBtn").click(function() {
           checkAnswer($("#spellingName").val());
@@ -62,8 +62,11 @@
       init();
 
       const checkAnswer = (text) => {
+        //sets relevant info if correct
         if(text.toUpperCase() == "<%- variants[0].name.toUpperCase() %>") {
-          changeToOriginal();
+          changeToVariant(0);
+
+          //adds variants tabs if applicable
           if(<%- variants.length %> > 1) {
             for(let i = 0; i < <%- variants.length %>; i++) {
               let variant = <%-JSON.stringify(variants)%>[i];
@@ -80,7 +83,7 @@
           }
           
           $("#spellingName").attr("disabled", true);
-          $("#spellingHeader").text("<%- pokemon.name %>" + " #" + "<%- pad(pokemon.id) %>");
+          $("#cardHeader").text("<%- pokemon.name %>" + " #" + "<%- pad(pokemon.id) %>");
           $("#spellingBtn").attr("disabled", true);
           $("#resultMsg").text("");
           $("#resultMsg").removeAttr("class");
@@ -95,10 +98,10 @@
       // changes info based on variant tab
       const changeToVariant = (id) => {
         if(id == 0) {
-          changeToOriginal(<%-JSON.stringify(variants)%>[0]);
+          changeToVariantMiddle(<%-JSON.stringify(variants)%>[0], true);
           return;
         }
-        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id]);
+        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id], false);
       }
     </script>
   </body>

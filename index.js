@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const port = 3000;
 var nationalDexCap = 0;
 
-import {capitalize, getTypes, getAbilities, getGenus, getHeight, getWeight, getFlavorText} from "./public/js/script.js";
+import {capitalize, getGenus, getFlavorText} from "./public/js/script.js";
   
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -36,39 +36,25 @@ const getSpecDetails = async(id) => {
     url = entry.pokemon.url;
     response = await fetch(url);
     let info = await response.json();
-    
-    if(variants.length == 0) {
-      variants.push({
-      "name": capitalize(info.name),
-      "types": getTypes(info.types),
-      "genera": getGenus(specInfo.genera),
-      "height": getHeight(info.height / 10),
-      "weight": getWeight(info.weight / 10),
-      "abilities": getAbilities(info.abilities),
-      "flavorText": getFlavorText(specInfo.flavor_text_entries),
-      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`
-      });
-    }
 
-    else {
-      variants.push({
+    variants.push({
       "name": capitalize(info.name),
       "types": info.types,
       "height": info.height / 10,
       "weight": info.weight / 10,
       "abilities": info.abilities,
       "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`
-      });
+    });
+    if(variants.length == 1) {
+      variants[0].genera = getGenus(specInfo.genera);
+      variants[0].flavorText = getFlavorText(specInfo.flavor_text_entries);
     }
   }  
   return variants;
 };
 
-app.get('/', async (req, res) => {
-  let bg = bgs[Math.floor(Math.random() * bgs.length)];
-
-  //gets nat dex id, base name
-  let id = Math.floor(Math.random() * nationalDexCap) + 1;
+//gets main and specific pokemon info
+const getAllDetails = async(id) => {
   let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   let response = await fetch(url);
   let mainInfo = await response.json();
@@ -81,8 +67,22 @@ app.get('/', async (req, res) => {
   let variants = await getSpecDetails(id);
 
   let cry = `https://pokemoncries.com/cries/${id}.mp3`;
-  
-  res.render('home', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg});
+
+  return {
+    "info": info,
+    "variants": variants,
+    "cry": cry
+  };
+};
+
+app.get('/', async (req, res) => {
+  let bg = bgs[Math.floor(Math.random() * bgs.length)];
+
+  //gets nat dex id, base name
+  let id = Math.floor(Math.random() * nationalDexCap) + 1;
+  let result = await getAllDetails(id);
+
+  res.render('home', {"pokemon": result.info, "variants": result.variants, "cry": result.cry, "bg": bg});
 });
 
 app.get('/choose', async (req, res) => {
@@ -93,19 +93,8 @@ app.get('/choose', async (req, res) => {
   id = parseInt(id);
 
   if(id && id >= 1 && id <= nationalDexCap) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-    let response = await fetch(url);
-    let mainInfo = await response.json();
-  
-    let info = {
-      "id": id,
-      "name": capitalize(mainInfo.species.name)
-    }
-  
-    let variants = await getSpecDetails(id);
-  
-    let cry = `https://pokemoncries.com/cries/${id}.mp3`;
-    res.render('choose', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg, "nationalDexCap": nationalDexCap});
+    let result = await getAllDetails(id);
+    res.render('choose', {"pokemon": result.info, "variants": result.variants, "cry": result.cry, "bg": bg, "nationalDexCap": nationalDexCap});
   } else {
     res.render('choose', {"pokemon": "", "variants": "", "cry": "", "bg": bg, "nationalDexCap": nationalDexCap});
   }
@@ -141,20 +130,9 @@ app.get('/spelling', async (req, res) => {
   let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
   let id = Math.floor(Math.random() * nationalDexCap) + 1;
-  let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  let response = await fetch(url);
-  let mainInfo = await response.json();
+  let result = await getAllDetails(id);
 
-  let info = {
-    "id": id,
-    "name": capitalize(mainInfo.species.name)
-  }
-
-  let variants = await getSpecDetails(id);
-
-  let cry = `https://pokemoncries.com/cries/${id}.mp3`;
-
-  res.render('spelling', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg});
+  res.render('spelling', {"pokemon": result.info, "variants": result.variants, "cry": result.cry, "bg": bg});
 });
 
 app.listen(port, () => {

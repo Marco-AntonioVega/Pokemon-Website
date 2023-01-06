@@ -8,19 +8,21 @@
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
   </head>
   
-  <body style="background-image: url('<%= bg %>'); background-size: cover;">
-    <% include("partials/functions.ejs") %> 
-    <header><h1>Welcome to the Pokédex!</h1></header>
+  <body style="background-image: url('<%= bg %>'); background-size: cover;"> 
     <%- include("partials/menu.ejs") %>
       
     <div class="column card">
       <h1>Guess the Pokémon By Its Cry</h1> <br>
+
+      <!-- pokemon cry -->
       <audio
         controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
         src="<%= cry %>">
         Your browser does not support the
         <code>audio</code> element.
       </audio>
+
+      <!-- pokemon options -->
       <div class="row">
         <% for(let i = 0; i < pokemon.length; i++) { %>
         <button class="column cry sound<%= i %>" value="<%= i %>">
@@ -36,6 +38,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+      //sets event listeners for tabs
       const init = () => {
         $(".cry").click(function() {
           checkAnswer($(this).val());
@@ -44,20 +47,21 @@
       
       init();
 
+      //checks answer
       const checkAnswer = (index) => {
         if(index == <%- cryIndex %>) {
           $(`.sound${index}`).attr("id", "correctBtn");
           $(".cry").attr("disabled", true);
           $('#resultMsg').removeAttr("class");
           $("#resultMsg").text("Correct!");
-          $("#resultMsg").attr("class", "correctMsg");
+          $("#resultMsg").addClass("correctMsg");
         }
 
         else {
-          $(`.sound${index}`).attr("class", "incorrectBtn");
+          $(`.sound${index}`).addClass("incorrectBtn");
           $(`.sound${index}`).attr("disabled", true);
           $("#resultMsg").text("Try again.");
-          $("#resultMsg").attr("class", "incorrectMsg");
+          $("#resultMsg").addClass("incorrectMsg");
         }
       }
     </script>

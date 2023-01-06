@@ -108,10 +108,12 @@ div, input, button {
 
 #correctBtn {
   background: rgba(50, 205, 50, 0.9);
+  color:black;
 }
 
 .incorrectBtn {
   background: rgba(255, 0, 0, 0.9);
+  color:black;
 }
 
 #tabRow {
@@ -135,4 +137,65 @@ div, input, button {
 
 .pokemonDetails, nav {
   font-size: 20px;
+}
+
+.typeIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.pokeball:hover, .displaySmallImg:hover {
+  cursor: pointer;
+  -webkit-animation: shake .1s;
+  animation-iteration-count: 2;
+  cursor: pointer;
+  -moz-animation: shake .1s;
+  animation-iteration-count: 2;
+  cursor: pointer;
+  -o-animation: shake .1s;
+  animation-iteration-count: 2;
+  cursor: pointer;
+  animation: shake .1s;
+  animation-iteration-count: 2;
+}
+
+@-webkit-keyframes shake {
+  0%,
+  100% {
+    -webkit-transform: rotate(-5deg);
+  }
+  50% {
+    -webkit-transform: rotate(5deg);
+  }
+}
+
+@-moz-keyframes shake {
+  0%,
+  100% {
+    -moz-transform: rotate(-5deg);
+  }
+  50% {
+    -moz-transform: rotate(5deg);
+  }
+}
+
+@-o-keyframes shake {
+  0%,
+  100% {
+    -o-transform: rotate(-5deg);
+  }
+  50% {
+    -o-transform: rotate(5deg);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
 }
