@@ -17,3 +17,4 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 3) Since Generation 9 is still new, [RESTful PokéAPI](https://pokeapi.co/) has no info for Pokémon in that generation yet.
 4) Melmetal has no cry since the owner of [PokémonCries](https://pokemoncries.com) does not include it in any generation. Hardcoding it may be the only solution.
 5) Pokémon without cries can show up on the Sound Quiz.
+6) Favicon is way too small.
