@@ -16,3 +16,4 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 2) Some Pokemon from Generation 8 and all Pokemon from Generation 9 are missing their cries until/if the owner of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
 3) Pokémon without cries can show up on the Sound Quiz.
 4) Favicon is way too small.
+5) Pokémon with hyphenated names such as Jangmo-o have the hyphen removed.
