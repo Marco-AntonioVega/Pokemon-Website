@@ -4,7 +4,7 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 
 # Follow these steps to run the application:
 
-1) Download [node.js](https://nodejs.org/en/download/) on your system. In your terminal, you can run "node -v" (without the quotes) to verify you installed node successfully and to check the version you have.
+1) Download [node.js](https://nodejs.org/en/download/) on your system. Downloading with default settings is fine. In your terminal, you can run "node -v" (without the quotes) to verify you installed node successfully and to check the version you have.
 2) Download the repository and unzip.
 3) Navigate to the project directory in your terminal.
 4) Run "npm install", then "node index.js".
