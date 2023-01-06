@@ -31,6 +31,7 @@ header h1 {
   background: rgba(255,255,0, 0.9);
   padding: 10px;
   border-radius: 10px;
+  font-size: 35px;
 }
 
 h4 {
@@ -59,7 +60,7 @@ div, input, button {
   margin: 0 auto;
 }
 
-.cryMargins {
+.cry {
   margin: 10px;
   margin-bottom: 20px;
 }
@@ -97,14 +98,41 @@ div, input, button {
   width: 200px;
 }
 
-.incorrect {
+.incorrectMsg {
   color: red;
 }
 
-#correct {
+.correctMsg {
   color: green;
 }
 
 #correctBtn {
   background: rgba(50, 205, 50, 0.9);
+}
+
+.incorrectBtn {
+  background: rgba(255, 0, 0, 0.9);
+}
+
+#tabRow {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+
+.tab {
+  font-size: 15px;
+  margin: 5px;
+  border: 3px solid black;
+  border-bottom: none;
+  
+  border-radius: 5px;
+  background: rgba(0, 191, 255, 0.4)
+}
+
+.pokemonDetails, nav {
+  font-size: 20px;
 }

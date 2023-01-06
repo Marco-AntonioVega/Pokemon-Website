@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>Spelling Bee</title>
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
+  </head>
+  
+  <body style="background-image: url('<%= bg %>'); background-size: cover;">
+    <% include("partials/functions.ejs") %> 
+    <header><h1>Welcome to the Pokédex!</h1></header>
+    <%- include("partials/menu.ejs") %>
+      
+    
+    <div id="chooseCard" class="card column">
+      <h3>Enter the Pokémon's name</h3>
+      <h3>(spelling counts):</h3><br>
+      <input type="text" name="spellingName" id="spellingName"><br>
+      <button id="spellingBtn">Submit</button>
+      <div><h2 id="resultMsg"></h2></div>
+    </div>
+      
+    <br><br>
+      
+    <div class="row card">
+      <div class="column">
+        <h1 id="spellingHeader">???</h1>
+        <div id="tabRow">
+        
+        </div>
+        <img id="sprite" src="<%= variants[0].sprite %>">
+        <audio
+          controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
+          src="<%= cry %>">
+          Your browser does not support the
+          <code>audio</code> element.
+        </audio>
+      </div>
+  
+      <div class="column">
+        <h4 class="item" id="type">Type: ???</h4>
+        <h4 class="item" id="genus">Species: ???</h4>
+        <h4 class="item" id="height">Height: ???</h4>
+        <h4 class="item" id="weight">Weight: ???</h4>
+        <h4 class="item" id="abilities">Abilities: ???</h4>
+        <h4 class="flavor" id="flavorText"></h4>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module">
+      import {pad, changeToOriginal, changeToVariantMiddle} from "./js/script.js";
+      
+      const init = () => {
+        $("#spellingBtn").click(function() {
+          checkAnswer($("#spellingName").val());
+        });
+      }
+      
+      init();
+
+      const checkAnswer = (text) => {
+        if(text.toUpperCase() == "<%- variants[0].name.toUpperCase() %>") {
+          changeToOriginal();
+          if(<%- variants.length %> > 1) {
+            for(let i = 0; i < <%- variants.length %>; i++) {
+              let variant = <%-JSON.stringify(variants)%>[i];
+              var button = document.createElement("button");
+              button.innerText = variant.name
+              button.className = "tab";
+              button.value = `${i}`;
+              var buttonDiv = document.getElementById("tabRow");
+              buttonDiv.appendChild(button);
+            }
+            $(".tab").click(function() {
+              changeToVariant($(this).val());
+            });
+          }
+          
+          $("#spellingName").attr("disabled", true);
+          $("#spellingHeader").text("<%- pokemon.name %>" + " #" + "<%- pad(pokemon.id) %>");
+          $("#spellingBtn").attr("disabled", true);
+          $("#resultMsg").text("");
+          $("#resultMsg").removeAttr("class");
+        }
+
+        else {
+          $("#resultMsg").text("Try again.");
+          $("#resultMsg").attr("class", "incorrectMsg");
+        }
+      }
+      
+      // changes info based on variant tab
+      const changeToVariant = (id) => {
+        if(id == 0) {
+          changeToOriginal(<%-JSON.stringify(variants)%>[0]);
+          return;
+        }
+        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id]);
+      }
+    </script>
+  </body>
+</html>

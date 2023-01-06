@@ -1,22 +1,18 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
 const port = 3000;
 var nationalDexCap = 0;
 
+import {capitalize, getTypes, getAbilities, getGenus, getHeight, getWeight, getFlavorText} from "./public/js/script.js";
+  
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+//background images
 var bgs = ["/img/charizards.jpg", "/img/horizon.jpg", "/img/ocean.jpg", "/img/psday.jpg", "/img/shaymin.jpg", "/img/waterfall.jpg"];
-
-var soundSprites = [];
-var soundNames = [];
-var cryURL = "";
-var soundBg = "";
-var cryIndex = 0;
-
-var typeID = 0;
-var typeBg = "";
 
 //gets pokedex number of last current Pokemon
 const getNationalDexCap = async() => {
@@ -28,70 +24,109 @@ const getNationalDexCap = async() => {
 
 getNationalDexCap();
 
-app.get('/', async (req, res) => {
-  bgs.sort(() => Math.random() - 0.5);
+//gets type, species, height, weight, abilities, and flavor text for variants/forms
+const getSpecDetails = async(id) => {
+  let url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
+  let response = await fetch(url);
+  let specInfo = await response.json();
+  let variants = [];
   
+  //gets info for each variant
+  for(const entry of specInfo.varieties) {
+    url = entry.pokemon.url;
+    response = await fetch(url);
+    let info = await response.json();
+    
+    if(variants.length == 0) {
+      variants.push({
+      "name": capitalize(info.name),
+      "types": getTypes(info.types),
+      "genera": getGenus(specInfo.genera),
+      "height": getHeight(info.height / 10),
+      "weight": getWeight(info.weight / 10),
+      "abilities": getAbilities(info.abilities),
+      "flavorText": getFlavorText(specInfo.flavor_text_entries),
+      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`
+      });
+    }
+
+    else {
+      variants.push({
+      "name": capitalize(info.name),
+      "types": info.types,
+      "height": info.height / 10,
+      "weight": info.weight / 10,
+      "abilities": info.abilities,
+      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`
+      });
+    }
+  }  
+  return variants;
+};
+
+app.get('/', async (req, res) => {
+  let bg = bgs[Math.floor(Math.random() * bgs.length)];
+
+  //gets nat dex id, base name
   let id = Math.floor(Math.random() * nationalDexCap) + 1;
   let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   let response = await fetch(url);
   let mainInfo = await response.json();
 
-  url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
-  response = await fetch(url);
-  let specInfo = await response.json();
+  let info = {
+    "id": id,
+    "name": capitalize(mainInfo.species.name)
+  }
 
-  let name = mainInfo.name;
-  let sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  let variants = await getSpecDetails(id);
+
   let cry = `https://pokemoncries.com/cries/${id}.mp3`;
   
-  res.render('home', {"pokemon": mainInfo, "details": specInfo, "sprite": sprite, "cry": cry, "bg": bgs[0]});
+  res.render('home', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg});
 });
 
 app.get('/choose', async (req, res) => {
-  bgs.sort(() => Math.random() - 0.5);
+  let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
   let id = req.query.chooseNum;
-  let mainInfo = "";
-  let specInfo = "";
-  let cry = "";
-  let sprite = "";
-
+  
   id = parseInt(id);
 
   if(id && id >= 1 && id <= nationalDexCap) {
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
-    mainInfo = await response.json();
-    
-    url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
-    response = await fetch(url);
-    specInfo = await response.json();
-
-    sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-    cry = `https://pokemoncries.com/cries/${id}.mp3`;
-  }
+    let mainInfo = await response.json();
   
-  res.render('choose', {"pokemon": mainInfo, "details": specInfo, "sprite": sprite, "bg": bgs[0], "cry": cry, "nationalDexCap": nationalDexCap});
+    let info = {
+      "id": id,
+      "name": capitalize(mainInfo.species.name)
+    }
+  
+    let variants = await getSpecDetails(id);
+  
+    let cry = `https://pokemoncries.com/cries/${id}.mp3`;
+    res.render('choose', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg, "nationalDexCap": nationalDexCap});
+  } else {
+    res.render('choose', {"pokemon": "", "variants": "", "cry": "", "bg": bg, "nationalDexCap": nationalDexCap});
+  }
 });
 
 app.get('/sound', async (req, res) => {
-  bgs.sort(() => Math.random() - 0.5);
-  
-  soundSprites = [];
-  soundNames = [];
+  let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
   let pokemon = [];
-  let sprites = [];
+  let id = 0;
   
   for(let i = 0; i < 4; i++) {
-    let id = Math.floor(Math.random() * (899 - 1) + 1);
+    id = Math.floor(Math.random() * nationalDexCap) + 1;
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     let data = await response.json();
-    pokemon.push(data);
-    soundNames.push(data.name);
-    url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-    sprites.push(url);
+    pokemon.push({
+      "id": id,
+      "name": capitalize(data.species.name),
+      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+    });
   }
   
   let index = Math.floor(Math.random() * 4);
@@ -99,61 +134,27 @@ app.get('/sound', async (req, res) => {
   
   let cry = `https://pokemoncries.com/cries/${id}.mp3`;
 
-  soundSprites = [...sprites];
-  cryURL = cry;
-  cryIndex = index;
-  soundBg = bgs[0];
-  
-  res.render('sound', {"pokemon": pokemon, "sprites": sprites, "bg": bgs[0], "cry": cry, "cryIndex": cryIndex});
+  res.render('sound', {"pokemon": pokemon, "cry": cry, "bg": bg, "cryIndex": index});
 });
 
-app.get('/soundWrongResults', async (req, res) => {
-  res.render('soundWrongResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": "Try again"});
-});
-
-app.get('/soundCorrectResults', async (req, res) => {
-  res.render('soundCorrectResults', {"names": soundNames, "sprites": soundSprites, "cry": cryURL, "cryIndex": cryIndex, "bg": soundBg, "message": "Correct!"});
-});
-
-app.get('/type', async (req, res) => {
-  bgs.sort(() => Math.random() - 0.5);
+app.get('/spelling', async (req, res) => {
+  let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
-  let id = Math.floor(Math.random() * (899 - 1) + 1);
-  typeID = id;
-  typeBg = bgs[0];
-  
+  let id = Math.floor(Math.random() * nationalDexCap) + 1;
   let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
   let response = await fetch(url);
   let mainInfo = await response.json();
-  
-  url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
-  response = await fetch(url);
-  let specInfo = await response.json();
 
-  let sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  let info = {
+    "id": id,
+    "name": capitalize(mainInfo.species.name)
+  }
+
+  let variants = await getSpecDetails(id);
+
   let cry = `https://pokemoncries.com/cries/${id}.mp3`;
 
-  res.render('type', {"pokemon": mainInfo, "details": specInfo, "sprite": sprite, "bg": bgs[0], "cry": cry});
-});
-
-app.get('/typeCheck', async (req, res) => {
-  let name = req.query.spellingName.toLowerCase();
-  let specInfo = "";
-  
-  let correctURL = `https://pokeapi.co/api/v2/pokemon/${typeID}`;
-  let correctResponse = await fetch(correctURL);
-  let correctMainInfo = await correctResponse.json();
-  
-  if(name == correctMainInfo.name) {
-    let url = `https://pokeapi.co/api/v2/pokemon-species/${typeID}/`;
-    let response = await fetch(url);
-    specInfo = await response.json();
-  }
-  
-  let sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${typeID}.png`;
-  let cry = `https://pokemoncries.com/cries/${typeID}.mp3`;
-  
-  res.render('typeCheck', {"pokemon": correctMainInfo, "details": specInfo, "sprite": sprite, "bg": typeBg, "cry": cry, "message": "Try again"});
+  res.render('spelling', {"pokemon": info, "variants": variants, "cry": cry, "bg": bg});
 });
 
 app.listen(port, () => {

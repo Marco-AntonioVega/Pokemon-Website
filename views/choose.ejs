@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <link href="/css/style.css" rel="stylesheet">
     <title>I Choose You</title>
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
   </head>
   
   <body style="background-image: url('<%= bg %>'); background-size: cover;">
@@ -15,7 +16,7 @@
     <form action="/choose" method="GET">
       <div id="chooseCard" class="card column">
         <h3>Enter a Pokédex number from 1 - <%= nationalDexCap %></h3><br>
-        <input type="text" name="chooseNum"><br>
+        <input name="chooseNum" type="number" step="1" min="1" max="<%= nationalDexCap %>"><br>
         <button type="submit">Submit</button>
       </div>
     </form>
@@ -25,11 +26,21 @@
     <div class="row card">
       <div class="column">
         <% if(pokemon) { %>
-          <h2><%= capitalize(pokemon.name) + " #" + pad(pokemon.id) %></h2>
-          <img class="displayImg" src="<%= sprite %>">
+          <h1><%= pokemon.name + " #" + pad(pokemon.id) %></h1>
+          <!-- pokemon variant tabs -->
+          <% if(variants.length > 1) { %>
+            <div id="tabRow">
+              <% for(let i = 0; i < variants.length; i++) { %>
+                <button class="tab" value="<%= i %>">
+                  <%= variants[i].name %>
+                </button>
+              <% } %>
+            </div>
+          <% } %>
+          <img id="sprite" class="displayImg" src="<%= variants[0].sprite %>">
         <% } else { %>
-          <h2>???</h2>
-          <img class="displayImg" src="/img/wtp.png">
+          <h1>???</h1>
+          <img id="sprite" class="displayImg" src="/img/wtp.png">
         <% } %>
         <audio
           controls style="margin: 0 auto; display: block; margin-bottom: 40px; margin-top: 40px;"
@@ -39,23 +50,45 @@
         </audio>
       </div>
   
-      <div class="column">
+      <div class="column pokemonDetails">
         <% if(pokemon) { %>
-          <h4 class="item">Type: <%= getTypes(pokemon) %></h4>
-          <h4 class="item">Species: <%= getGenus(details) %></h4>
-          <h4 class="item">Height: <%= getHeight(pokemon) %></h4>
-          <h4 class="item">Weight: <%= getWeight(pokemon) %></h4>
-          <h4 class="item">Abilities: <%= getAbilities(pokemon) %></h4>
-          <h4 class="flavor"><%= getFlavorText(details) %></h4>
+          <h4 class="item" id="type">Type: <%= variants[0].types %></h4>
+          <h4 class="item" id="genus">Species: <%= variants[0].genera %></h4>
+          <h4 class="item" id="height">Height: <%= variants[0].height %></h4>
+          <h4 class="item" id="weight">Weight: <%= variants[0].weight %></h4>
+          <h4 class="item" id="abilities">Abilities: <%= variants[0].abilities %></h4>
+          <h4 class="flavor" id="flavorText"><%= variants[0].flavorText %></h4>
         <% } else { %>
-          <h4 class="item">Type: ???</h4>
-          <h4 class="item">Species: ???</h4>
-          <h4 class="item">Height: ???</h4>
-          <h4 class="item">Weight: ???</h4>
-          <h4 class="item">Abilities: ???</h4>
-          <h4 class="flavor"></h4>
+          <h4 class="item" id="type">Type: ???</h4>
+          <h4 class="item" id="genus">Species: ???</h4>
+          <h4 class="item" id="height">Height: ???</h4>
+          <h4 class="item" id="weight">Weight: ???</h4>
+          <h4 class="item" id="abilities">Abilities: ???</h4>
+          <h4 class="flavor" id="flavorText"></h4>
         <% } %>
       </div>
-    </div>  
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module">
+      import {changeToOriginal, changeToVariantMiddle} from "./js/script.js";
+      
+      const init = () => {
+        $(".tab").click(function() {
+          changeToVariant($(this).val());
+        });
+      }
+      
+      init();
+      
+      // changes info based on variant tab
+      const changeToVariant = (id) => {
+        if(id == 0) {
+          changeToOriginal(<%-JSON.stringify(variants)%>[0]);
+          return;
+        }
+        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id]);
+      }
+    </script>
   </body>
 </html>
