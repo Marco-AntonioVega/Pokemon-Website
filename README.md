@@ -10,10 +10,3 @@ Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCrie
 4) Run "npm install", then "node index.js".
 5) Navigate to http://localhost:3000/ on your browser.
 6) Type ctrl+c in your terminal to stop the server after you are finished.
-
-# Known issues:
-1) Fetching unique cries, flavor text, and species for Pokémon that share the same Pokédex number but have different forms is currently impossible with the resources I have. I may have to hard code or make my own API for this to be perfect. 
-2) Some Pokemon from Generation 8 and all Pokemon from Generation 9 are missing their cries until/if the owner of [PokémonCries](https://pokemoncries.com) updates their site in the future or if I find another API.
-3) Pokémon without cries can show up on the Sound Quiz.
-4) Favicon is way too small.
-5) Pokémon with hyphenated names such as Jangmo-o have the hyphen removed.
