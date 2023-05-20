@@ -23,7 +23,7 @@ const getNationalDexCap = async() => {
   nationalDexCap = info.count;
 };
 
-getNationalDexCap();
+//getNationalDexCap();
 
 //gets type, species, height, weight, abilities, and flavor text for variants/forms
 const getSpecDetails = async(id) => {

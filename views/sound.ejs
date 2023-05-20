@@ -6,26 +6,27 @@
     <link href="/css/style.css" rel="stylesheet">
     <title>Sound Enthusiast</title>
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
+    <script src="https://kit.fontawesome.com/c9df24baca.js" crossorigin="anonymous"></script>
   </head>
   
   <body style="background-image: url('<%= bg %>'); background-size: cover;"> 
     <%- include("partials/menu.ejs") %>
       
     <div class="column card">
+    <!-- refresh button -->
+      <a href="/sound">
+        <i class="fa-solid fa-rotate fa-xl right" id="refreshButton"></i>
+      </a>
+
       <h1>Guess the Pokémon By Its Cry</h1> <br>
 
       <!-- pokemon cry -->
-      <audio
-        controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
-        src="<%= cry %>">
-        Your browser does not support the
-        <code>audio</code> element.
-      </audio>
+      <i class="fa-solid fa-volume-high fa-2xl center soundIconMargins" id="cry" data-value="<%= cry %>"></i>
 
       <!-- pokemon options -->
-      <div class="row">
+      <div class="row" id="cryChoiceRow">
         <% for(let i = 0; i < pokemon.length; i++) { %>
-        <button class="column cry sound<%= i %>" value="<%= i %>">
+        <button class="column cryChoice sound<%= i %>" value="<%= i %>">
           <img class="displaySmallImg" src="<%= pokemon[i].sprite %>">
           <div class="chooseName"> 
             <h2><%= pokemon[i].name %></h2>
@@ -38,10 +39,14 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-      //sets event listeners for tabs
+      //sets event listeners for buttons and audio
       const init = () => {
-        $(".cry").click(function() {
+        $(".cryChoice").click(function() {
           checkAnswer($(this).val());
+        });
+
+        $("#cry").click(function() {
+          new Audio($("#cry").attr("data-value")).play();
         });
       }
       
@@ -51,7 +56,7 @@
       const checkAnswer = (index) => {
         if(index == <%- cryIndex %>) {
           $(`.sound${index}`).attr("id", "correctBtn");
-          $(".cry").attr("disabled", true);
+          $(".cryChoice").attr("disabled", true);
           $('#resultMsg').removeAttr("class");
           $("#resultMsg").text("Correct!");
           $("#resultMsg").addClass("correctMsg");

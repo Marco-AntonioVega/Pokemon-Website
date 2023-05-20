@@ -6,6 +6,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <title>I Choose You</title>
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
+    <script src="https://kit.fontawesome.com/c9df24baca.js" crossorigin="anonymous"></script>
   </head>
   
   <body style="background-image: url('<%= bg %>'); background-size: cover;">
@@ -41,16 +42,11 @@
 
           <!-- pokemon sprite and cry -->
           <img id="sprite" class="displayImg" src="<%= variants[0].sprite %>">
+          <i class="fa-solid fa-volume-high fa-2xl center" id="cry" data-value="<%= cry %>"></i>
         <% } else { %>
           <h1>???</h1>
           <img id="sprite" class="displayImg" src="/img/wtp.png">
         <% } %>
-        <audio
-          controls style="margin: 0 auto; display: block; margin-bottom: 40px; margin-top: 40px;"
-          src="<%= cry %>">
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
       </div>
 
       <!-- specific pokemon details, first variant as default on submit -->
@@ -77,14 +73,19 @@
         changeToVariantMiddle(<%-JSON.stringify(variants)%>[id], false);
       }
 
-      //sets event listeners for tabs
+      //sets event listeners for tabs and audio
       const init = () => {
         $(".tab").click(function() {
           changeToVariant($(this).val());
         });
+
+        $("#cry").click(function() {
+          new Audio($("#cry").attr("data-value")).play();
+        });
+
         if(<%-JSON.stringify(pokemon)%>) {
           changeToVariant(0);
-        }
+        }        
       }
       
       init();

@@ -6,6 +6,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <title>Spelling Bee</title>
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
+    <script src="https://kit.fontawesome.com/c9df24baca.js" crossorigin="anonymous"></script>
   </head>
   
   <body style="background-image: url('<%= bg %>'); background-size: cover;">
@@ -29,12 +30,7 @@
 
         <!-- pokemon sprite and cry -->
         <img id="sprite" src="<%= variants[0].sprite %>">
-        <audio
-          controls style="margin: 0 auto; display: block; margin-bottom: 40px;"
-          src="<%= cry %>">
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
+        <i class="fa-solid fa-volume-high fa-2xl center" id="cry" data-value="<%= cry %>"></i>
       </div>
 
       <!-- specific pokemon details, first variant as default on submit -->
@@ -46,16 +42,26 @@
         <h4 class="item" id="abilities">Abilities: ???</h4>
         <h4 class="flavor" id="flavorText"></h4>
       </div>
+
+      <!-- refresh button -->
+      <a href="/spelling">
+        <i class="fa-solid fa-rotate fa-xl" id="refreshButton"></i>
+      </a>
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module">
       import {pad, changeToVariantMiddle} from "./js/script.js";
 
-      //sets event listeners for tabs
+      //sets event listeners for tabs and audio
       const init = () => {
         $("#spellingBtn").click(function() {
           checkAnswer($("#spellingName").val());
+        });
+
+        $("#cry").click(function() {
+          new Audio($("#cry").attr("data-value")).play();
         });
       }
       
