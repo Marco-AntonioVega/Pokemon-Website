@@ -1,7 +1,13 @@
 //formats names
 const capitalize = (text) => {
-  if(text.indexOf('-') == -1) {
+  let specialPokemon = ["ho-oh", "jangmo-o", "hakamo-o", "kommo-o"];
+  
+  if(text.indexOf('-') == -1 || specialPokemon.includes(text.toLowerCase())) {
     return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  if(text.toLowerCase() == "porygon-z") {
+    return text.charAt(0).toUpperCase() + text.slice(1, text.length - 1) + text.slice(-1).toUpperCase();
   }
   
   let arr = text.split('-');

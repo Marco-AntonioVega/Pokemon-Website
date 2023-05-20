@@ -13,6 +13,7 @@ app.use(express.static("public"));
 
 //background images
 var bgs = ["/img/charizards.jpg", "/img/horizon.jpg", "/img/ocean.jpg", "/img/psday.jpg", "/img/shaymin.jpg", "/img/waterfall.jpg"];
+var missingCryIDs = [741, 745, 803, 804, 805, 806, 807, 808, 809, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905];
 
 //gets pokedex number of last current Pokemon
 const getNationalDexCap = async() => {
@@ -104,10 +105,16 @@ app.get('/sound', async (req, res) => {
   let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
   let pokemon = [];
+  let ids = [];
   let id = 0;
   
   for(let i = 0; i < 4; i++) {
-    id = Math.floor(Math.random() * nationalDexCap) + 1;
+    do {
+      id = Math.floor(Math.random() * nationalDexCap) + 1;
+    } while (ids.includes(id) || missingCryIDs.includes(id));
+
+    ids.push(id)
+    
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     let data = await response.json();
