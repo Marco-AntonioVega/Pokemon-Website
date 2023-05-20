@@ -1,6 +1,6 @@
 # Pokémon-Website
 This project provides Pokémon quizzes and activities using Node.js, Express.js, and EJS.
-Resources used are the [RESTful PokéAPI](https://pokeapi.co/) and [PokémonCries](https://pokemoncries.com).
+Resources used are the [RESTful PokéAPI](https://pokeapi.co/), [PokémonCries](https://pokemoncries.com), [pokesprite-images](https://www.npmjs.com/package/pokesprite-images), [Pokémon Showdown](https://play.pokemonshowdown.com/fx/?C=N;O=D), and [FontAwesome](https://fontawesome.com/).
 
 # Follow these steps to run the application:
 
