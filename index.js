@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
 const port = 3000;
-var nationalDexCap = 0;
+var nationalDexCap = 905;
 
 import {capitalize, getGenus, getFlavorText} from "./public/js/script.js";
   
