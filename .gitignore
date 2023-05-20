@@ -1,0 +1,6 @@
+# Directories
+node_modules/
+.vs/
+
+# Files
+package-lock.json
