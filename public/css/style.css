@@ -205,12 +205,12 @@ div, input, button {
   }
 }
 
-#refreshButton {
+#refreshBtn {
   margin-right: 10px;
   color: black;
 }
 
-#refreshButton:hover {
+#refreshBtn:hover {
   color: white;
   animation-name: spin;
   animation-duration: 5000ms;
@@ -245,7 +245,7 @@ div, input, button {
   margin-bottom: 30px;
 }
 
-.submitButton {
+.submitBtn {
   border-radius: 5px;
   border: none;
   background-color: #037BFF;
@@ -253,11 +253,11 @@ div, input, button {
   padding: 8px;
 }
 
-.submitButton:hover {
+.submitBtn:hover {
   background-color: #0169D9;
 }
 
-input {
+.textInput {
   margin-right: 10px;
   border-radius: 5px;
   border: none;
@@ -333,4 +333,14 @@ input {
    to {
      opacity: 0.9;
    }
+}
+
+#shinyBtn {
+    color:black;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+#sprite {
+    margin-bottom: 30px;
 }

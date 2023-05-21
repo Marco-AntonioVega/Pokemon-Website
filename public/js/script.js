@@ -95,23 +95,70 @@ const pad = (id) => {
 }
 
 //changes to variant tab
-const changeToVariantMiddle = (variant, isOriginal) => {
-  if(isOriginal) {
-    document.getElementById("sprite").src = variant.sprite;
+const changeToVariant = (variant, id, hasVariants) => {
+
+  //returns if current tab is selected
+  if (hasVariants && id == document.getElementById("tabRow").getAttribute("data-value")) {
+    return;
+  }
+
+  if (id == 0) {
     document.getElementById("genus").innerText = "Species: " + variant.genera;
     document.getElementById("flavorText").innerText = variant.flavorText;
   }
 
-  else {
-    $.get(variant.sprite).done(function () {
-      document.getElementById("sprite").src = variant.sprite;
-    });
-  }
-  
+  changeShinySprite(variant);
   document.getElementById("type").innerHTML = "Type: " + getTypes(variant.types);
   document.getElementById("height").innerText = "Height: " + getHeight(variant.height);
   document.getElementById("weight").innerText = "Weight: " + getWeight(variant.weight);
   document.getElementById("abilities").innerText = "Abilities: " + getAbilities(variant.abilities);
+  if (hasVariants) {
+    document.getElementById("tabRow").setAttribute("data-value", id);
+  }
 }
 
-export {capitalize, getGenus, getFlavorText, pad, changeToVariantMiddle}
+//sets sprite to current shiny status
+const changeShinySprite = (variant) => {
+    if (document.getElementById("shinyBtn").getAttribute("data-value") == "nonShiny") {
+      document.getElementById("sprite").src = variant.sprite;
+    } else {
+      fetch(variant.shinySprite)
+        .then(function (response) {
+          if (response.ok) {
+            document.getElementById("sprite").src = variant.shinySprite
+          } else {
+              document.getElementById("sprite").src = variant.sprite
+          }
+        })
+        .catch(function (error) {
+          console.log("Error occurred while fetching the image URL:", error);
+        });
+    }
+}
+
+//changes sprite to opposite of current shiny status
+const onShinyBtnClick = (variant) => {
+    let shinyBtn = document.getElementById("shinyBtn");
+    if (shinyBtn.getAttribute("data-value") == "nonShiny") {
+      shinyBtn.setAttribute("src", "/img/shinyIconBlue.png");
+      shinyBtn.setAttribute("data-value", "shiny");
+
+      fetch(variant.shinySprite)
+        .then(function (response) {
+          if (response.ok) {
+            document.getElementById("sprite").src = variant.shinySprite
+          } else {
+              document.getElementById("sprite").src = variant.sprite
+          }
+        })
+        .catch(function (error) {
+          console.log("Error occurred while fetching the image URL:", error);
+        });
+    } else {
+      shinyBtn.setAttribute("src", "/img/shinyIcon.png");
+      shinyBtn.setAttribute("data-value", "nonShiny");
+      console.log(document.getElementById("sprite").src = variant.sprite);
+    }
+}
+
+export {capitalize, getGenus, getFlavorText, pad, changeToVariant, onShinyBtnClick}

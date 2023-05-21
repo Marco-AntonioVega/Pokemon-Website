@@ -44,7 +44,8 @@ const getSpecDetails = async(id) => {
       "height": info.height / 10,
       "weight": info.weight / 10,
       "abilities": info.abilities,
-      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`
+      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${info.id}.png`,
+      "shinySprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${info.id}.png`
     });
     if(variants.length == 1) {
       variants[0].genera = getGenus(specInfo.genera);

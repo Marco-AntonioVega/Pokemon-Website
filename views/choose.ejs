@@ -16,8 +16,8 @@
     <!-- dex num input box -->
     <form action="/choose" method="GET">
       <div id="chooseCard" class="card row">
-        <input name="chooseNum" type="number" class="chooseInput" step="1" min="1" max="<%= nationalDexCap %>" placeholder="Enter a Pokédex number from 1 - <%= nationalDexCap %>"><br>
-        <button type="submit" class="submitButton">Submit</button>
+        <input name="chooseNum" type="number" class="chooseInput textInput" step="1" min="1" max="<%= nationalDexCap %>" placeholder="Enter a Pokédex number from 1 - <%= nationalDexCap %>"><br>
+        <button type="submit" class="submitBtn">Submit</button>
       </div>
     </form>
       
@@ -26,11 +26,17 @@
     <div class="row card">
       <div class="column">
         <% if(pokemon) { %>
-          <h1 id="cardHeader"><%= pokemon.name + " #" + pad(pokemon.id) %></h1>
+          <div class="row">
+            <h1 id="cardHeader">
+              <%= pokemon.name + " #" + pad(pokemon.id) %>
+            </h1>
+
+            <input type="image" id="shinyBtn" src="/img/shinyIcon.png" data-value="nonShiny"/>
+          </div>
           
           <!-- pokemon variant tabs -->
           <% if(variants.length > 1) { %>
-            <div id="tabRow">
+            <div id="tabRow" data-value="-1">
               <% for(let i = 0; i < variants.length; i++) { %>
                 <button class="tab" value="<%= i %>">
                   <%= variants[i].name %>
@@ -61,29 +67,30 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module">
-      import {changeToVariantMiddle} from "./js/script.js";
-      
-      // changes info based on variant tab
-      const changeToVariant = (id) => {
-        if(id == 0) {
-          changeToVariantMiddle(<%-JSON.stringify(variants)%>[0], true);
-          return;
-        }
-        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id], false);
-      }
-
-      //sets event listeners for tabs and audio
+      import {changeToVariant, onShinyBtnClick} from "./js/script.js";
+      console.log(<%-JSON.stringify(variants)%>[1]);
+      //sets event listeners for tabs, audio, and shiny toggle
       const init = () => {
+        var hasVariants = $("#tabRow").length ? true : false;
+
         $(".tab").click(function() {
-          changeToVariant($(this).val());
+          changeToVariant(<%-JSON.stringify(variants)%>[$(this).val()], $(this).val(), hasVariants);
         });
 
         $("#cry").click(function() {
           new Audio($("#cry").attr("data-value")).play();
         });
 
+        $("#shinyBtn").click(function() {
+          if(hasVariants) {
+            onShinyBtnClick(<%-JSON.stringify(variants)%>[$("#tabRow").attr("data-value")]);
+          } else {
+            onShinyBtnClick(<%-JSON.stringify(variants)%>[0]);
+          } 
+        });
+
         if(<%-JSON.stringify(pokemon)%>) {
-          changeToVariant(0);
+          changeToVariant(<%-JSON.stringify(variants)%>[0], 0, hasVariants);
         }        
       }
       

@@ -14,19 +14,24 @@
 
     <!-- pokemon name input box -->
     <div id="chooseCard" class="card row">
-      <input type="text" name="spellingName" id="spellingName" placeholder="Enter the Pokémon's name">
-      <button class="submitButton" id="spellingBtn">Submit</button>
+      <input type="text" name="spellingName" class="textInput" id="spellingName" placeholder="Enter the Pokémon's name">
+      <button class="submitBtn" id="spellingBtn">Submit</button>
     </div>
       
     <br><br>
       
     <div class="row card">
       <div class="column">
-        <h1 class="popup" id="cardHeader">
-          ???
-          <span class="popuptext" id="myPopup">Try Again!</span>
-        </h1>
-        <div id="tabRow"></div>
+        <div class="row">
+          <h1 class="popup" id="cardHeader">
+            ???
+            <span class="popuptext" id="myPopup">Try Again!</span>
+          </h1>
+
+          <input type="image" id="shinyBtn" src="/img/shinyIcon.png" data-value="nonShiny" hidden/>
+        </div>
+
+        <div id="tabRow" data-value="-1"></div>
 
         <!-- pokemon sprite and cry -->
         <img id="sprite" src="<%= variants[0].sprite %>">
@@ -45,32 +50,45 @@
 
       <!-- refresh button -->
       <a href="/spelling">
-        <i class="fa-solid fa-rotate fa-xl" id="refreshButton"></i>
+        <i class="fa-solid fa-rotate fa-xl" id="refreshBtn"></i>
       </a>
 
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module">
-      import {pad, changeToVariantMiddle} from "./js/script.js";
+      import {pad, changeToVariant, onShinyBtnClick} from "./js/script.js";
 
-      //sets event listeners for tabs and audio
+      var hasVariants = $("#tabRow").length ? true : false;
+
+      //sets event listeners for audio, shiny toggle, and spelling check
       const init = () => {
-        $("#spellingBtn").click(function() {
-          checkAnswer($("#spellingName").val());
-        });
-
+        
         $("#cry").click(function() {
           new Audio($("#cry").attr("data-value")).play();
+        });
+
+        $("#shinyBtn").click(function() {
+          if(hasVariants) {
+            onShinyBtnClick(<%-JSON.stringify(variants)%>[$("#tabRow").attr("data-value")]);
+          } else {
+            onShinyBtnClick(<%-JSON.stringify(variants)%>[0]);
+          } 
+        });
+
+        $("#spellingBtn").click(function() {
+          checkAnswer($("#spellingName").val());
         });
       }
       
       init();
-
+      
       const checkAnswer = (text) => {
         //sets relevant info if correct
+
         if(text.toUpperCase() == "<%- variants[0].name.toUpperCase() %>") {
-          changeToVariant(0);
+
+          changeToVariant(<%-JSON.stringify(variants)%>[0], 0, hasVariants);
 
           //adds variants tabs if applicable
           if(<%- variants.length %> > 1) {
@@ -84,13 +102,14 @@
               buttonDiv.appendChild(button);
             }
             $(".tab").click(function() {
-              changeToVariant($(this).val());
+              changeToVariant(<%-JSON.stringify(variants)%>[$(this).val()], $(this).val(), hasVariants);
             });
           }
           
           $("#spellingName").attr("disabled", true);
           $("#cardHeader").text("<%- pokemon.name %>" + " #" + "<%- pad(pokemon.id) %>");
           $("#spellingBtn").attr("disabled", true);
+          $("#shinyBtn").removeAttr("hidden");
         }
 
         else {
@@ -99,14 +118,6 @@
         }
       }
       
-      // changes info based on variant tab
-      const changeToVariant = (id) => {
-        if(id == 0) {
-          changeToVariantMiddle(<%-JSON.stringify(variants)%>[0], true);
-          return;
-        }
-        changeToVariantMiddle(<%-JSON.stringify(variants)%>[id], false);
-      }
     </script>
   </body>
 </html>
