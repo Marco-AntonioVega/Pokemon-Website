@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <link href="/css/style.css" rel="stylesheet">
     <title>Spelling Bee</title>
-    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" sizes="64x64">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
     <script src="https://kit.fontawesome.com/c9df24baca.js" crossorigin="anonymous"></script>
   </head>
   
@@ -13,19 +13,19 @@
     <%- include("partials/menu.ejs") %>
 
     <!-- pokemon name input box -->
-    <div id="chooseCard" class="card column">
-      <h3>Enter the Pokémon's name</h3>
-      <h3>(spelling counts):</h3><br>
-      <input type="text" name="spellingName" id="spellingName"><br>
-      <button id="spellingBtn">Submit</button>
-      <div><h2 id="resultMsg"></h2></div>
+    <div id="chooseCard" class="card row">
+      <input type="text" name="spellingName" id="spellingName" placeholder="Enter the Pokémon's name">
+      <button class="submitButton" id="spellingBtn">Submit</button>
     </div>
       
     <br><br>
       
     <div class="row card">
       <div class="column">
-        <h1 id="cardHeader">???</h1>
+        <h1 class="popup" id="cardHeader">
+          ???
+          <span class="popuptext" id="myPopup">Try Again!</span>
+        </h1>
         <div id="tabRow"></div>
 
         <!-- pokemon sprite and cry -->
@@ -91,13 +91,11 @@
           $("#spellingName").attr("disabled", true);
           $("#cardHeader").text("<%- pokemon.name %>" + " #" + "<%- pad(pokemon.id) %>");
           $("#spellingBtn").attr("disabled", true);
-          $("#resultMsg").text("");
-          $("#resultMsg").removeAttr("class");
         }
 
         else {
-          $("#resultMsg").text("Try again.");
-          $("#resultMsg").attr("class", "incorrectMsg");
+          var popup = document.getElementById("myPopup");
+          popup.classList.toggle("show");
         }
       }
       
