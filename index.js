@@ -14,6 +14,7 @@ app.use(express.static("public"));
 //background images
 var bgs = ["/img/charizards.jpg", "/img/horizon.jpg", "/img/ocean.jpg", "/img/psday.jpg", "/img/shaymin.jpg", "/img/waterfall.jpg"];
 var missingCryIDs = [741, 745, 803, 804, 805, 806, 807, 808, 809, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905];
+var shinyMaxOdds = 4096;
 
 //gets pokedex number of last current Pokemon
 const getNationalDexCap = async() => {
@@ -119,10 +120,13 @@ app.get('/sound', async (req, res) => {
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     let data = await response.json();
+
     pokemon.push({
       "id": id,
       "name": capitalize(data.species.name),
-      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+      "sprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+      "shinySprite": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
+      "isShiny": Math.floor(Math.random() * shinyMaxOdds) == 0 ? true : false
     });
   }
   

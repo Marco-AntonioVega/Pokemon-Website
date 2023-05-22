@@ -13,7 +13,8 @@
     <%- include("partials/menu.ejs") %>
       
     <div class="column card">
-    <!-- refresh button -->
+
+      <!-- refresh button -->
       <a href="/sound">
         <i class="fa-solid fa-rotate fa-xl right" id="refreshBtn"></i>
       </a>
@@ -27,10 +28,18 @@
       <div class="row" id="cryChoiceRow">
         <% for(let i = 0; i < pokemon.length; i++) { %>
         <button class="column cryChoice sound<%= i %>" value="<%= i %>">
-          <img class="displaySmallImg" src="<%= pokemon[i].sprite %>">
+          
+          <!-- uses shiny sprite if lucky -->
+          <% if(pokemon[i].isShiny) { %>
+            <img class="displaySmallImg" src="<%= pokemon[i].shinySprite %>">
+          <% } else { %>
+            <img class="displaySmallImg" src="<%= pokemon[i].sprite %>">
+          <% } %>
+
           <div class="chooseName"> 
             <h2><%= pokemon[i].name %></h2>
           </div>
+
         </button>
         <% } %>
       </div>
@@ -39,6 +48,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+
       //sets event listeners for buttons and audio
       const init = () => {
         $(".cryChoice").click(function() {

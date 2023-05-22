@@ -1,5 +1,11 @@
 //formats names
 const capitalize = (text) => {
+
+  let testSpecial = specialCapitalize(text);
+  if(testSpecial) {
+    return testSpecial;
+  }
+  
   let specialPokemon = ["ho-oh", "jangmo-o", "hakamo-o", "kommo-o"];
   
   if(text.indexOf('-') == -1 || specialPokemon.includes(text.toLowerCase())) {
@@ -15,6 +21,60 @@ const capitalize = (text) => {
     arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
   }
   return arr.join(" ");
+}
+
+//special cases that need to be dealt with specifically
+const specialCapitalize = (text) => {
+  if (text == "farfetchd") {
+    return "Farfetch'd";
+  }
+
+  if(text == "farfetchd-galar") {
+    return "Farfetch'd Galar";
+  }
+
+  if(text == "oricorio-pau") {
+    return "Oricorio Pa'u";
+  }
+
+  if(text == "oricorio-pom-pom") {
+    return "Oricorio Pom-Pom";
+  }
+
+  if (text.includes("basculin") && text.indexOf('-') != -1) {
+    let arr = text.split('-');
+    return "Basculin " + capitalize(arr[1]) + "-" + capitalize(arr[2]);
+  }
+
+  if(text == "type-null") {
+    return "Type: Null";
+  }
+
+  if(text == "zygarde-50") {
+    return "Zygarde 50%";
+  }
+
+  if(text == "zygarde-10-power-construct") {
+    return "Zygarde 10% Power Construct";
+   }
+
+  if(text == "zygarde-50-power-construct") {
+    return "Zygarde 50% Power Construct";
+  }
+
+  if(text == "zygarde-10") {
+    return "Zygarde 10%";
+  }
+
+  if(text == "mr-mime") {
+    return "Mr. Mime";
+  }
+
+  if(text == "mr-mime-galar") {
+    return "Mr. Mime Galar";
+  }
+
+  return "";
 }
 
 //gets types of input pokemon
@@ -41,10 +101,7 @@ const getAbilities = (abilities) => {
 
 //get genus of input pokemon
 const getGenus = (genera) => {
-  for(let i = 0; i < genera.length; i++) {
-    if(genera[i].language.name == "en")
-      return genera[i].genus;
-  }
+  return genera[7].genus;
 }
 
 //get height of input pokemon
