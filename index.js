@@ -77,7 +77,7 @@ const getAllDetails = async(id) => {
     "cry": cry
   };
 };
-
+/*
 app.get('/', async (req, res) => {
   let bg = bgs[Math.floor(Math.random() * bgs.length)];
 
@@ -86,19 +86,25 @@ app.get('/', async (req, res) => {
   let result = await getAllDetails(id);
 
   res.render('home', {"pokemon": result.info, "variants": result.variants, "cry": result.cry, "bg": bg});
-});
+});*/
 
-app.get('/choose', async (req, res) => {
+app.get('/', async (req, res) => {
   let bg = bgs[Math.floor(Math.random() * bgs.length)];
   
   let id = req.query.chooseNum;
   
   id = parseInt(id);
 
+  if (req.query.submitBtnName == "randomSubmitBtn" || req.query.submitBtnName != "chooseSubmitBtn") {
+    id = Math.floor(Math.random() * nationalDexCap) + 1;
+  }
+
   if(id && id >= 1 && id <= nationalDexCap) {
     let result = await getAllDetails(id);
     res.render('choose', {"pokemon": result.info, "variants": result.variants, "cry": result.cry, "bg": bg, "nationalDexCap": nationalDexCap});
-  } else {
+  }
+  
+  else {
     res.render('choose', {"pokemon": "", "variants": "", "cry": "", "bg": bg, "nationalDexCap": nationalDexCap});
   }
 });

@@ -14,10 +14,12 @@
     <%- include("partials/menu.ejs") %>
 
     <!-- dex num input box -->
-    <form action="/choose" method="GET">
+    <form action="/" method="GET">
       <div id="chooseCard" class="card row">
         <input name="chooseNum" type="number" class="chooseInput textInput" step="1" min="1" max="<%= nationalDexCap %>" placeholder="Enter a Pokédex number from 1 - <%= nationalDexCap %>"><br>
-        <button type="submit" class="submitBtn">Submit</button>
+        <button type="submit" class="submitBtn" id="chooseSubmitBtn">Submit</button>
+        <button type="submit" class="submitBtn" id="randomSubmitBtn">Random</button>
+        <input hidden name="submitBtnName" id="submitBtnName" value=""></div>
       </div>
     </form>
       
@@ -91,7 +93,11 @@
 
         if(<%-JSON.stringify(pokemon)%>) {
           changeToVariant(<%-JSON.stringify(variants)%>[0], 0, hasVariants);
-        }        
+        }      
+        
+        $(".submitBtn").click(function() {
+          $("#submitBtnName").val($(this).attr("id"));
+        });
       }
       
       init();

@@ -330,17 +330,29 @@ div, input, button {
     opacity: 0;
   }
 
-   to {
+  to {
      opacity: 0.9;
-   }
+  }
 }
 
 #shinyBtn {
-    color:black;
-    max-width: 50px;
-    max-height: 50px;
+  color:black;
+  max-width: 50px;
+  max-height: 50px;
 }
 
 #sprite {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+#chooseSubmitBtn {
+  margin-right: 10px;
+}
+
+#randomSubmitBtn {
+  background-color: #208637;
+}
+
+#randomSubmitBtn:hover {
+  background-color: #196D2D;
 }

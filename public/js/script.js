@@ -101,7 +101,11 @@ const getAbilities = (abilities) => {
 
 //get genus of input pokemon
 const getGenus = (genera) => {
-  return genera[7].genus;
+  for(let i = 0; i < genera.length; i++) {
+    if(genera[i].language.name == "en") {
+      return genera[i].genus;
+    }
+  }
 }
 
 //get height of input pokemon
