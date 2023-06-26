@@ -2,6 +2,9 @@
 This project provides Pokémon quizzes and activities using Node.js, Express.js, and EJS.
 Resources used are the [RESTful PokéAPI](https://pokeapi.co/), [PokémonCries](https://pokemoncries.com), [pokesprite-images](https://www.npmjs.com/package/pokesprite-images), [Pokémon Showdown](https://play.pokemonshowdown.com/fx/?C=N;O=D), and [FontAwesome](https://fontawesome.com/).
 
+#Demo
+![alt text]([https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1"](https://github.com/Marco-AntonioVega/Pokemon-Website/blob/main/misc/websiteDemo.gif))
+
 # Follow these steps to run the application:
 
 1) Download [node.js](https://nodejs.org/en/download/) on your system. Downloading with default settings is fine. In your terminal, you can run "node -v" (without the quotes) to verify you installed node successfully and to check the version you have.
